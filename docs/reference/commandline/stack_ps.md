@@ -1,12 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/stack_tasks/
-advisory: experimental
-description: The stack ps command description and usage
-keywords:
-- stack, ps
-title: docker stack ps (experimental)
+title: "stack ps"
+description: "The stack ps command description and usage"
+keywords: "stack, ps"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# stack ps
 
 ```markdown
 Usage:  docker stack ps [OPTIONS] STACK
@@ -14,10 +21,10 @@ Usage:  docker stack ps [OPTIONS] STACK
 List the tasks in the stack
 
 Options:
-  -a, --all            Display all tasks
-  -f, --filter value   Filter output based on conditions provided
-      --no-resolve     Do not map IDs to Names
-      --no-trunc       Do not truncate output
+  -f, --filter filter   Filter output based on conditions provided
+      --help            Print usage
+      --no-resolve      Do not map IDs to Names
+      --no-trunc        Do not truncate output
 ```
 
 Lists the tasks that are running as part of the specified stack. This
@@ -38,7 +45,7 @@ The currently supported filters are:
 
 ## Related information
 
-* [stack config](stack_config.md)
 * [stack deploy](stack_deploy.md)
+* [stack ls](stack_ls.md)
 * [stack rm](stack_rm.md)
 * [stack services](stack_services.md)

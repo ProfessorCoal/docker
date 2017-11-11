@@ -1,11 +1,20 @@
 ---
-redirect_from:
-  - /reference/commandline/
-description: Docker's CLI command description and usage
-keywords:
-- Docker, Docker documentation, CLI,  command line
-title: The Docker commands
+title: "Docker commands"
+description: "Docker's CLI command description and usage"
+keywords: "Docker, Docker documentation, CLI, command line"
+identifier: "smn_cli_guide"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# The Docker commands
 
 This section contains reference information on using Docker's command line
 client. Each command has a reference page along with samples. If you are
@@ -97,6 +106,7 @@ read the [`dockerd`](dockerd.md) reference page.
 | [volume create](volume_create.md) | Creates a new volume where containers can consume and store data |
 | [volume inspect](volume_inspect.md) | Display information about a volume     |
 | [volume ls](volume_ls.md) | Lists all the volumes Docker knows about         |
+| [volume prune](volume_prune.md) | Remove all unused volumes                  |
 | [volume rm](volume_rm.md) | Remove one or more volumes                       |
 
 
@@ -108,7 +118,7 @@ read the [`dockerd`](dockerd.md) reference page.
 | [node demote](node_demote.md) | Demotes an existing manager so that it is no longer a manager |
 | [node inspect](node_inspect.md) | Inspect a node in the swarm                |
 | [node update](node_update.md) | Update attributes for a node                 |
-| [node ps](node_ps.md) | List tasks running on a node                   |
+| [node ps](node_ps.md) | List tasks running on one or more nodes                         |
 | [node ls](node_ls.md) | List nodes in the swarm                              |
 | [node rm](node_rm.md) | Remove one or more nodes from the swarm                         |
 
@@ -133,3 +143,36 @@ read the [`dockerd`](dockerd.md) reference page.
 | [service scale](service_scale.md) | Set the number of replicas for the desired state of the service |
 | [service ps](service_ps.md) | List the tasks of a service              |
 | [service update](service_update.md)  | Update the attributes of a service    |
+
+### Swarm secret commands
+
+| Command | Description                                                        |
+|:--------|:-------------------------------------------------------------------|
+| [secret create](secret_create.md) | Create a secret from a file or STDIN as content |
+| [secret inspect](service_inspect.md) | Inspect the specified secret          |
+| [secret ls](secret_ls.md) | List secrets in the swarm                        |
+| [secret rm](secret_rm.md) | Remove the specified secrets from the swarm      |
+
+### Swarm stack commands
+
+| Command | Description                                                        |
+|:--------|:-------------------------------------------------------------------|
+| [stack deploy](stack_deploy.md) | Deploy a new stack or update an existing stack |
+| [stack ls](stack_ls.md) | List stacks in the swarm                           |
+| [stack ps](stack_ps.md) | List the tasks in the stack                        |
+| [stack rm](stack_rm.md) | Remove the stack from the swarm                    |
+| [stack services](stack_services.md) | List the services in the stack         |
+
+### Plugin commands
+
+| Command | Description                                                        |
+|:--------|:-------------------------------------------------------------------|
+| [plugin create](plugin_create.md) | Create a plugin from a rootfs and configuration |
+| [plugin disable](plugin_disable.md) | Disable a plugin                       |
+| [plugin enbale](plugin_enable.md)  | Enable a plugin                         |
+| [plugin inspect](plugin_inspect.md) | Display detailed information on a plugin |
+| [plugin install](plugin_install.md) | Install a plugin                       |
+| [plugin ls](plugin_ls.md) | List plugins                                     |
+| [plugin push](plugin_push.md) | Push a plugin to a registry                  |
+| [plugin rm](plugin_rm.md) | Remove a plugin                                  |
+| [plugin set](plugin_set.md)  | Change settings for a plugin                  |

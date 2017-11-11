@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/search/
-description: The search command description and usage
-keywords:
-- search, hub, images
-title: docker search
+title: "search"
+description: "The search command description and usage"
+keywords: "search, hub, images"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# search
 
 ```markdown
 Usage:  docker search [OPTIONS] TERM
@@ -24,7 +32,7 @@ Options:
 
 Search [Docker Hub](https://hub.docker.com) for images
 
-See [*Find Public Images on Docker Hub*](../../tutorials/dockerrepos.md#searching-for-images) for
+See [*Find Public Images on Docker Hub*](https://docs.docker.com/engine/tutorials/dockerrepos/#searching-for-images) for
 more details on finding shared images from the command line.
 
 > **Note:**
@@ -38,7 +46,7 @@ This example displays images with a name containing 'busybox':
 
     $ docker search busybox
     NAME                             DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
-    busybox                          Busybox base image.                             316       [OK]
+    busybox                          Busybox base image.                             316       [OK]       
     progrium/busybox                                                                 50                   [OK]
     radial/busyboxplus               Full-chain, Internet enabled, busybox made...   8                    [OK]
     odise/busybox-python                                                             2                    [OK]
@@ -71,7 +79,7 @@ at least 3 stars and the description isn't truncated in the output:
 
     $ docker search --stars=3 --no-trunc busybox
     NAME                 DESCRIPTION                                                                               STARS     OFFICIAL   AUTOMATED
-    busybox              Busybox base image.                                                                       325       [OK]
+    busybox              Busybox base image.                                                                       325       [OK]       
     progrium/busybox                                                                                               50                   [OK]
     radial/busyboxplus   Full-chain, Internet enabled, busybox made from scratch. Comes in git and cURL flavors.   8                    [OK]
 
@@ -100,7 +108,7 @@ least 3 stars:
 
     $ docker search --filter stars=3 busybox
     NAME                 DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
-    busybox              Busybox base image.                             325       [OK]
+    busybox              Busybox base image.                             325       [OK]       
     progrium/busybox                                                     50                   [OK]
     radial/busyboxplus   Full-chain, Internet enabled, busybox made...   8                    [OK]
 

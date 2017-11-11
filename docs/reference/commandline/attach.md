@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/attach/
-description: The attach command description and usage
-keywords:
-- attach, running, container
-title: docker attach
+title: "attach"
+description: "The attach command description and usage"
+keywords: "attach, running, container"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# attach
 
 ```markdown
 Usage: docker attach [OPTIONS] CONTAINER
@@ -19,11 +27,10 @@ Options:
       --sig-proxy            Proxy all received signals to the process (default true)
 ```
 
-The `docker attach` command allows you to attach to a running container using
-the container's ID or name, either to view its ongoing output or to control it
-interactively. You can attach to the same contained process multiple times
-simultaneously, screen sharing style, or quickly view the progress of your
-detached  process.
+Use `docker attach` to attach to a running container using the container's ID
+or name, either to view its ongoing output or to control it interactively.
+You can attach to the same contained process multiple times simultaneously,
+screen sharing style, or quickly view the progress of your detached process.
 
 To stop a container, use `CTRL-c`. This key sequence sends `SIGKILL` to the
 container. If `--sig-proxy` is true (the default),`CTRL-c` sends a `SIGINT` to

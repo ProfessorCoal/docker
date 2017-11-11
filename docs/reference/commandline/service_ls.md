@@ -1,13 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/service_ls/
-description: The service ls command description and usage
-keywords:
-- service, ls
-title: docker service ls
+title: "service ls"
+description: "The service ls command description and usage"
+keywords: "service, ls"
 ---
 
-**Warning:** this command is part of the Swarm management feature introduced in Docker 1.12, and might be subject to non backward-compatible changes.
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# service ls
 
 ```Markdown
 Usage:	docker service ls [OPTIONS]
@@ -27,16 +33,16 @@ This command when run targeting a manager, lists services are running in the
 swarm.
 
 On a manager node:
-
 ```bash
-ID            NAME      REPLICAS  IMAGE         COMMAND
-c8wgl7q4ndfd  frontend  5/5       nginx:alpine
-dmu1ept4cxcf  redis     3/3       redis:3.0.6
+$ docker service ls
+ID            NAME      MODE        REPLICAS    IMAGE
+c8wgl7q4ndfd  frontend  replicated  5/5         nginx:alpine
+dmu1ept4cxcf  redis     replicated  3/3         redis:3.0.6
+iwe3278osahj  mongo     global      7/7         mongo:3.3
 ```
 
 The `REPLICAS` column shows both the *actual* and *desired* number of tasks for
 the service.
-
 
 ## Filtering
 
@@ -55,8 +61,8 @@ The `id` filter matches all or part of a service's id.
 
 ```bash
 $ docker service ls -f "id=0bcjw"
-ID            NAME   REPLICAS  IMAGE        COMMAND
-0bcjwfh8ychr  redis  1/1       redis:3.0.6
+ID            NAME   MODE        REPLICAS  IMAGE
+0bcjwfh8ychr  redis  replicated  1/1       redis:3.0.6
 ```
 
 #### Label
@@ -69,10 +75,10 @@ its value:
 
 ```bash
 $ docker service ls --filter label=project
-ID            NAME       REPLICAS  IMAGE         COMMAND
-01sl1rp6nj5u  frontend2  1/1       nginx:alpine
-36xvvwwauej0  frontend   5/5       nginx:alpine
-74nzcxxjv6fq  backend    3/3       redis:3.0.6
+ID            NAME       MODE        REPLICAS  IMAGE
+01sl1rp6nj5u  frontend2  replicated  1/1       nginx:alpine
+36xvvwwauej0  frontend   replicated  5/5       nginx:alpine
+74nzcxxjv6fq  backend    replicated  3/3       redis:3.0.6
 ```
 
 The following filter matches only services with the `project` label with the
@@ -80,28 +86,28 @@ The following filter matches only services with the `project` label with the
 
 ```bash
 $ docker service ls --filter label=project=project-a
-ID            NAME      REPLICAS  IMAGE         COMMAND
-36xvvwwauej0  frontend  5/5       nginx:alpine
-74nzcxxjv6fq  backend   3/3       redis:3.0.6
+ID            NAME      MODE        REPLICAS  IMAGE
+36xvvwwauej0  frontend  replicated  5/5       nginx:alpine
+74nzcxxjv6fq  backend   replicated  3/3       redis:3.0.6
 ```
-
 
 #### Name
 
-The `name` filter matches on all or part of a tasks's name.
+The `name` filter matches on all or part of a service's name.
 
 The following filter matches services with a name containing `redis`.
 
 ```bash
 $ docker service ls --filter name=redis
-ID            NAME   REPLICAS  IMAGE        COMMAND
-0bcjwfh8ychr  redis  1/1       redis:3.0.6
+ID            NAME   MODE        REPLICAS  IMAGE
+0bcjwfh8ychr  redis  replicated  1/1       redis:3.0.6
 ```
 
 ## Related information
 
 * [service create](service_create.md)
 * [service inspect](service_inspect.md)
+* [service logs](service_logs.md)
 * [service rm](service_rm.md)
 * [service scale](service_scale.md)
 * [service ps](service_ps.md)

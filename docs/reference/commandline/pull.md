@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/pull/
-description: The pull command description and usage
-keywords:
-- pull, image, hub, docker
-title: docker pull
+title: "pull"
+description: "The pull command description and usage"
+keywords: "pull, image, hub, docker"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# pull
 
 ```markdown
 Usage:  docker pull [OPTIONS] NAME[:TAG|@DIGEST]
@@ -33,8 +41,15 @@ If you are behind an HTTP proxy server, for example in corporate settings,
 before open a connect to registry, you may need to configure the Docker
 daemon's proxy settings, using the `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`
 environment variables. To set these environment variables on a host using
-`systemd`, refer to the [control and configure Docker with systemd](../../admin/systemd.md#http-proxy)
+`systemd`, refer to the [control and configure Docker with systemd](https://docs.docker.com/engine/admin/systemd/#http-proxy)
 for variables configuration.
+
+## Concurrent downloads
+
+By default the Docker daemon will pull three layers of an image at a time.
+If you are on a low bandwidth connection this may cause timeout issues and you may want to lower
+this via the `--max-concurrent-downloads` daemon option. See the
+[daemon documentation](dockerd.md) for more details.
 
 ## Examples
 
@@ -92,7 +107,7 @@ same image, their layers are stored only once and do not consume extra disk
 space.
 
 For more information about images, layers, and the content-addressable store,
-refer to [understand images, containers, and storage drivers](../../userguide/storagedriver/imagesandcontainers.md).
+refer to [understand images, containers, and storage drivers](https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/).
 
 
 ## Pull an image by digest (immutable identifier)

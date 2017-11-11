@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/network_create/
-description: The network create command description and usage
-keywords:
-- network, create
-title: docker network create
+title: "network create"
+description: "The network create command description and usage"
+keywords: "network, create"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# network create
 
 ```markdown
 Usage:	docker network create [OPTIONS] NETWORK
@@ -13,6 +21,7 @@ Usage:	docker network create [OPTIONS] NETWORK
 Create a network
 
 Options:
+      --attachable           Enable manual container attachment
       --aux-address value    Auxiliary IPv4 or IPv6 addresses used by Network
                              driver (default map[])
   -d, --driver string        Driver to manage the Network (default "bridge")
@@ -60,7 +69,7 @@ The `dockerd` options that support the `overlay` network are:
 * `--cluster-advertise`
 
 To read more about these options and how to configure them, see ["*Get started
-with multi-host network*"](../../userguide/networking/get-started-overlay.md).
+with multi-host network*"](https://docs.docker.com/engine/userguide/networking/get-started-overlay).
 
 While not required, it is a good idea to install Docker Swarm to
 manage the cluster that makes up your network. Swarm provides sophisticated
@@ -189,4 +198,5 @@ to create an externally isolated `overlay` network, you can specify the
 * [network disconnect](network_disconnect.md)
 * [network ls](network_ls.md)
 * [network rm](network_rm.md)
-* [Understand Docker container networks](../../userguide/networking/index.md)
+* [network prune](network_prune.md)
+* [Understand Docker container networks](https://docs.docker.com/engine/userguide/networking/)

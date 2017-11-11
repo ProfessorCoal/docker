@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/network_inspect/
-description: The network inspect command description and usage
-keywords:
-- network, inspect, user-defined
-title: docker network inspect
+title: "network inspect"
+description: "The network inspect command description and usage"
+keywords: "network, inspect, user-defined"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# network inspect
 
 ```markdown
 Usage:  docker network inspect [OPTIONS] NETWORK [NETWORK...]
@@ -13,7 +21,7 @@ Usage:  docker network inspect [OPTIONS] NETWORK [NETWORK...]
 Display detailed information on one or more networks
 
 Options:
-  -f, --format string   Format the output using the given go template
+  -f, --format string   Format the output using the given Go template
       --help            Print usage
 ```
 
@@ -45,6 +53,7 @@ $ sudo docker network inspect bridge
     {
         "Name": "bridge",
         "Id": "b2b1a2cba717161d984383fd68218cf70bbbd17d328496885f7c921333228b0f",
+        "Created": "2016-10-19T04:33:30.360899459Z",
         "Scope": "local",
         "Driver": "bridge",
         "IPAM": {
@@ -80,7 +89,8 @@ $ sudo docker network inspect bridge
             "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
             "com.docker.network.bridge.name": "docker0",
             "com.docker.network.driver.mtu": "1500"
-        }
+        },
+        "Labels": {}
     }
 ]
 ```
@@ -95,6 +105,7 @@ $ docker network inspect simple-network
     {
         "Name": "simple-network",
         "Id": "69568e6336d8c96bbf57869030919f7c69524f71183b44d80948bd3927c87f6a",
+        "Created": "2016-10-19T04:33:30.360899459Z",
         "Scope": "local",
         "Driver": "bridge",
         "IPAM": {
@@ -102,12 +113,70 @@ $ docker network inspect simple-network
             "Config": [
                 {
                     "Subnet": "172.22.0.0/16",
-                    "Gateway": "172.22.0.1/16"
+                    "Gateway": "172.22.0.1"
                 }
             ]
         },
         "Containers": {},
-        "Options": {}
+        "Options": {},
+        "Labels": {}
+    }
+]
+```
+
+For swarm mode overlay networks `network inspect` also shows the IP address and node name 
+of the peers. Peers are the nodes in the swarm cluster which have at least one task attached 
+to the network. Node name is of the format `<hostname>-<unique ID>`.
+
+```bash
+$ docker network inspect ingress
+[
+    {
+        "Name": "ingress",
+        "Id": "j0izitrut30h975vk4m1u5kk3",
+        "Created": "2016-11-08T06:49:59.803387552Z",
+        "Scope": "swarm",
+        "Driver": "overlay",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "10.255.0.0/16",
+                    "Gateway": "10.255.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Containers": {
+            "ingress-sbox": {
+                "Name": "ingress-endpoint",
+                "EndpointID": "40e002d27b7e5d75f60bc72199d8cae3344e1896abec5eddae9743755fe09115",
+                "MacAddress": "02:42:0a:ff:00:03",
+                "IPv4Address": "10.255.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.driver.overlay.vxlanid_list": "256"
+        },
+        "Labels": {},
+        "Peers": [
+            {
+                "Name": "net-1-1d22adfe4d5c",
+                "IP": "192.168.33.11"
+            },
+            {
+                "Name": "net-2-d55d838b34af",
+                "IP": "192.168.33.12"
+            },
+            {
+                "Name": "net-3-8473f8140bd9",
+                "IP": "192.168.33.13"
+            }
+        ]
     }
 ]
 ```
@@ -119,4 +188,5 @@ $ docker network inspect simple-network
 * [network create](network_create.md)
 * [network ls](network_ls.md)
 * [network rm](network_rm.md)
-* [Understand Docker container networks](../../userguide/networking/index.md)
+* [network prune](network_prune.md)
+* [Understand Docker container networks](https://docs.docker.com/engine/userguide/networking/)

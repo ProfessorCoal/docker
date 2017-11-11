@@ -1,8 +1,6 @@
 ---
-advisory: experimental
 description: Develop and use a plugin with the managed plugin system
-keywords:
-- API, Usage, plugins, documentation, developer
+keywords: "API, Usage, plugins, documentation, developer"
 title: Managed plugin system
 ---
 
@@ -15,8 +13,7 @@ title: Managed plugin system
      will be rejected.
 -->
 
-This document describes the plugin system available today in the **experimental
-build** of Docker 1.12:
+# Docker Engine managed plugin system
 
 * [Installing and using a plugin](index.md#installing-and-using-a-plugin)
 * [Developing a plugin](index.md#developing-a-plugin)
@@ -27,6 +24,9 @@ volume drivers, but more plugin driver types will be available in future release
 
 For information about the legacy plugin system available in Docker Engine 1.12
 and earlier, see [Understand legacy Docker Engine plugins](legacy_plugins.md).
+
+> **Note**: Docker Engine managed plugins are currently not supported
+on Windows daemons.
 
 ## Installing and using a plugin
 
@@ -69,8 +69,8 @@ enabled, and use it to create a volume.
     ```bash
     $ docker plugin ls
 
-    NAME                TAG                 ENABLED
-    vieux/sshfs         latest              true
+    ID                    NAME                  TAG                 DESCRIPTION                   ENABLED
+    69553ca1d789          vieux/sshfs           latest              the `sshfs` plugin            true
     ```
 
 3.  Create a volume using the plugin.
@@ -107,126 +107,90 @@ remove it, use the `docker plugin remove` command. For other available
 commands and options, see the
 [command line reference](../reference/commandline/index.md).
 
+## Service creation using plugins
+
+In swarm mode, it is possible to create a service that allows for attaching
+to networks or mounting volumes. Swarm schedules services based on plugin availability
+on a node. In this example, a volume plugin is installed on a swarm worker and a volume 
+is created using the plugin. In the manager, a service is created with the relevant
+mount options. It can be observed that the service is scheduled to run on the worker
+node with the said volume plugin and volume. 
+
+In the following example, node1 is the manager and node2 is the worker.
+
+1.  Prepare manager. In node 1:
+
+    ```bash
+    $ docker swarm init
+    Swarm initialized: current node (dxn1zf6l61qsb1josjja83ngz) is now a manager.
+    ```
+
+2. Join swarm, install plugin and create volume on worker. In node 2:
+
+    ```bash
+    $ docker swarm join \
+    --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c \
+    192.168.99.100:2377
+    ```
+
+    ```bash
+    $ docker plugin install tiborvass/sample-volume-plugin
+    latest: Pulling from tiborvass/sample-volume-plugin
+    eb9c16fbdc53: Download complete
+    Digest: sha256:00b42de88f3a3e0342e7b35fa62394b0a9ceb54d37f4c50be5d3167899994639
+    Status: Downloaded newer image for tiborvass/sample-volume-plugin:latest
+    Installed plugin tiborvass/sample-volume-plugin
+    ```
+	
+    ```bash
+    $ docker volume create -d tiborvass/sample-volume-plugin --name pluginVol
+    ```
+
+3. Create a service using the plugin and volume. In node1:
+
+    ```bash
+    $ docker service create --name my-service --mount type=volume,volume-driver=tiborvass/sample-volume-plugin,source=pluginVol,destination=/tmp busybox top
+
+    $ docker service ls
+    z1sj8bb8jnfn  my-service   replicated  1/1       busybox:latest 
+    ```
+    docker service ls shows service 1 instance of service running.
+
+4. Observe the task getting scheduled in node 2:
+
+    ```bash
+    $ docker ps --format '{{.ID}}\t {{.Status}} {{.Names}} {{.Command}}' 
+    83fc1e842599     Up 2 days my-service.1.9jn59qzn7nbc3m0zt1hij12xs "top"
+    ```
+
 ## Developing a plugin
-
-Currently, there are no CLI commands available to help you develop a plugin.
-This is expected to change in a future release. The manual process for creating
-plugins is described in this section.
-
-### Plugin location and files
-
-Plugins are stored in `/var/lib/docker/plugins`. The `plugins.json` file lists
-each plugin's configuration, and each plugin is stored in a directory with a
-unique identifier.
-
-```bash
-# ls -la /var/lib/docker/plugins
-total 20
-drwx------  4 root root 4096 Aug  8 18:03 .
-drwx--x--x 12 root root 4096 Aug  8 17:53 ..
-drwxr-xr-x  3 root root 4096 Aug  8 17:56 cd851ce43a403
--rw-------  1 root root 2107 Aug  8 18:03 plugins.json
-```
-
-### Format of plugins.json
-
-The `plugins.json` is an inventory of all installed plugins. This example shows
-a `plugins.json` with a single plugin installed.
-
-```json
-# cat plugins.json
-{
-  "cd851ce43a403": {
-    "plugin": {
-      "Manifest": {
-        "Args": {
-          "Value": null,
-          "Settable": null,
-          "Description": "",
-          "Name": ""
-        },
-        "Env": null,
-        "Devices": null,
-        "Mounts": null,
-        "Capabilities": [
-          "CAP_SYS_ADMIN"
-        ],
-        "ManifestVersion": "v0",
-        "Description": "sshFS plugin for Docker",
-        "Documentation": "https://docs.docker.com/engine/extend/plugins/",
-        "Interface": {
-          "Socket": "sshfs.sock",
-          "Types": [
-            "docker.volumedriver/1.0"
-          ]
-        },
-        "Entrypoint": [
-          "/go/bin/docker-volume-sshfs"
-        ],
-        "Workdir": "",
-        "User": {},
-        "Network": {
-          "Type": "host"
-        }
-      },
-      "Config": {
-        "Devices": null,
-        "Args": null,
-        "Env": [],
-        "Mounts": []
-      },
-      "Active": true,
-      "Tag": "latest",
-      "Name": "vieux/sshfs",
-      "Id": "cd851ce43a403"
-    }
-  }
-}
-```
-
-### Contents of a plugin directory
-
-Each directory within `/var/lib/docker/plugins/` contains a `rootfs` directory
-and two JSON files.
-
-```bash
-# ls -la /var/lib/docker/plugins/cd851ce43a403
-total 12
-drwx------ 19 root root 4096 Aug  8 17:56 rootfs
--rw-r--r--  1 root root   50 Aug  8 17:56 plugin-config.json
--rw-------  1 root root  347 Aug  8 17:56 manifest.json
-```
 
 #### The rootfs directory
 The `rootfs` directory represents the root filesystem of the plugin. In this
 example, it was created from a Dockerfile:
 
->**Note:** The `/run/docker/plugins` directory is mandatory for docker to communicate with
-the plugin.
+>**Note:** The `/run/docker/plugins` directory is mandatory inside of the
+plugin's filesystem for docker to communicate with the plugin.
 
 ```bash
 $ git clone https://github.com/vieux/docker-volume-sshfs
 $ cd docker-volume-sshfs
-$ docker build -t rootfs .
-$ id=$(docker create rootfs true) # id was cd851ce43a403 when the image was created
-$ sudo mkdir -p /var/lib/docker/plugins/$id/rootfs
-$ sudo docker export "$id" | sudo tar -x -C /var/lib/docker/plugins/$id/rootfs
-$ sudo chgrp -R docker /var/lib/docker/plugins/
+$ docker build -t rootfsimage .
+$ id=$(docker create rootfsimage true) # id was cd851ce43a403 when the image was created
+$ sudo mkdir -p myplugin/rootfs
+$ sudo docker export "$id" | sudo tar -x -C myplugin/rootfs
 $ docker rm -vf "$id"
-$ docker rmi rootfs
+$ docker rmi rootfsimage
 ```
 
-#### The manifest.json and plugin-config.json files
+#### The config.json file
 
-The `manifest.json` file describes the plugin. The `plugin-config.json` file
-contains runtime parameters and is only required if your plugin has runtime
-parameters. [See the Plugins Manifest reference](manifest.md).
+The `config.json` file describes the plugin. See the [plugins config reference](config.md).
 
-Consider the following `manifest.json` file.
+Consider the following `config.json` file.
 
 ```json
 {
-	"manifestVersion": "v0",
 	"description": "sshFS plugin for Docker",
 	"documentation": "https://docs.docker.com/engine/extend/plugins/",
 	"entrypoint": ["/go/bin/docker-volume-sshfs"],
@@ -244,56 +208,15 @@ Consider the following `manifest.json` file.
 This plugin is a volume driver. It requires a `host` network and the
 `CAP_SYS_ADMIN` capability. It depends upon the `/go/bin/docker-volume-sshfs`
 entrypoint and uses the `/run/docker/plugins/sshfs.sock` socket to communicate
-with Docker Engine.
+with Docker Engine. This plugin has no runtime parameters.
 
+#### Creating the plugin
 
-Consider the following `plugin-config.json` file.
+A new plugin can be created by running
+`docker plugin create <plugin-name> ./path/to/plugin/data` where the plugin
+data contains a plugin configuration file `config.json` and a root filesystem
+in subdirectory `rootfs`. 
 
-```json
-{
-  "Devices": null,
-  "Args": null,
-  "Env": [],
-  "Mounts": []
-}
-```
-
-This plugin has no runtime parameters.
-
-Each of these JSON files is included as part of `plugins.json`, as you can see
-by looking back at the example above. After a plugin is installed, `manifest.json`
-is read-only, but `plugin-config.json` is read-write, and includes all runtime
-configuration options for the plugin.
-
-### Creating the plugin
-
-Follow these steps to create a plugin:
-
-1. Choose a name for the plugin. Plugin name uses the same format as images,
-   for example: `<repo_name>/<name>`.
-
-2. Create a `rootfs` and export it to `/var/lib/docker/plugins/$id/rootfs`
-   using `docker export`. See [The rootfs directory](#the-rootfs-directory) for
-   an example of creating a `rootfs`.
-
-3. Create a `manifest.json` file in `/var/lib/docker/plugins/$id/`.
-
-4. Create a `plugin-config.json` file if needed.
-
-5. Create or add a section to `/var/lib/docker/plugins/plugins.json`. Use
-   `<user>/<name>` as “Name” and `$id` as “Id”.
-
-6. Restart the Docker Engine service.
-
-7. Run `docker plugin ls`.
-    * If your plugin is enabled, you can push it to the
-      registry.
-    * If the plugin is not listed or is disabled, something went wrong.
-      Check the daemon logs for errors.
-
-8. If you are not already logged in, use `docker login` to authenticate against
-   the registry so that you can push to it.
-
-9. Run `docker plugin push <repo_name>/<name>` to push the plugin.
-
-The plugin can now be used by any user with access to your registry.
+After that the plugin `<plugin-name>` will show up in `docker plugin ls`.
+Plugins can be pushed to remote registries with
+`docker plugin push <plugin-name>`.

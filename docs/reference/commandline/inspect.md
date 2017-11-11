@@ -1,22 +1,31 @@
 ---
-redirect_from:
-  - /reference/commandline/inspect/
-description: The inspect command description and usage
-keywords:
-- inspect, container, json
-title: docker inspect
+title: "inspect"
+description: "The inspect command description and usage"
+keywords: "inspect, container, json"
 ---
 
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# inspect
+
 ```markdown
-Usage:  docker inspect [OPTIONS] CONTAINER|IMAGE|TASK [CONTAINER|IMAGE|TASK...]
+Usage:  docker inspect [OPTIONS] NAME|ID [NAME|ID...]
 
-Return low-level information on a container, image or task
+Return low-level information on Docker object(s) (e.g. container, image, volume,
+network, node, service, or task) identified by name or ID
 
-  -f, --format       Format the output using the given go template
-  --help             Print usage
+Options:
+  -f, --format       Format the output using the given Go template
+      --help         Print usage
   -s, --size         Display total file sizes if the type is container
-                     values are "image" or "container" or "task"
-  --type             Return JSON for specified type, (e.g image, container or task)
+      --type         Return JSON for specified type
 ```
 
 By default, this will render all results in a JSON array. If the container and

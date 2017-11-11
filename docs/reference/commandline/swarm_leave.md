@@ -1,21 +1,27 @@
 ---
-redirect_from:
-  - /reference/commandline/swarm_leave/
-description: The swarm leave command description and usage
-keywords:
-- swarm, leave
-title: docker swarm leave
+title: "swarm leave"
+description: "The swarm leave command description and usage"
+keywords: "swarm, leave"
 ---
 
-**Warning:** this command is part of the Swarm management feature introduced in Docker 1.12, and might be subject to non backward-compatible changes.
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# swarm leave
 
 ```markdown
-Usage:  docker swarm leave [OPTIONS]
+Usage:	docker swarm leave [OPTIONS]
 
-Leave the swarm (workers only).
+Leave the swarm
 
 Options:
-      --force   Force this node to leave the swarm, ignoring warnings
+  -f, --force   Force this node to leave the swarm, ignoring warnings
       --help    Print usage
 ```
 
@@ -29,7 +35,6 @@ without using `--force`. Only use `--force` in situations where the swarm will
 no longer be used after the manager leaves, such as in a single-node swarm.
 
 Consider the following swarm, as seen from the manager:
-
 ```bash
 $ docker node ls
 ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS
@@ -39,12 +44,10 @@ dvfxp4zseq4s0rih1selh0d20 *  manager1  Ready   Active        Leader
 ```
 
 To remove `worker2`, issue the following command from `worker2` itself:
-
 ```bash
 $ docker swarm leave
 Node left the default swarm.
 ```
-
 To remove an inactive node, use the [`node rm`](node_rm.md) command instead.
 
 ## Related information

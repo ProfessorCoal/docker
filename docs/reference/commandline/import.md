@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/import/
-description: The import command description and usage
-keywords:
-- import, file, system, container
-title: docker import
+title: "import"
+description: "The import command description and usage"
+keywords: "import, file, system, container"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# import
 
 ```markdown
 Usage:  docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]

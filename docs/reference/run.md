@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/run/
-description: Configure containers at runtime
-keywords:
-- docker, run, configure,  runtime
-title: Docker run reference
+title: "Docker run reference"
+description: "Configure containers at runtime"
+keywords: "docker, run, configure, runtime"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# Docker run reference
 
 Docker runs processes in isolated containers. A container is a process
 which runs on a host. The host may be local or remote. When an operator
@@ -54,18 +62,18 @@ types*](commandline/cli.md#option-types).
 Only the operator (the person executing `docker run`) can set the
 following options.
 
- - [Detached vs foreground](run.md#detached-vs-foreground)
-     - [Detached (-d)](run.md#detached--d)
-     - [Foreground](run.md#foreground)
- - [Container identification](run.md#container-identification)
-     - [Name (--name)](run.md#name---name)
-     - [PID equivalent](run.md#pid-equivalent)
- - [IPC settings (--ipc)](run.md#ipc-settings---ipc)
- - [Network settings](run.md#network-settings)
- - [Restart policies (--restart)](run.md#restart-policies---restart)
- - [Clean up (--rm)](run.md#clean-up---rm)
- - [Runtime constraints on resources](run.md#runtime-constraints-on-resources)
- - [Runtime privilege and Linux capabilities](run.md#runtime-privilege-and-linux-capabilities)
+ - [Detached vs foreground](#detached-vs-foreground)
+     - [Detached (-d)](#detached--d)
+     - [Foreground](#foreground)
+ - [Container identification](#container-identification)
+     - [Name (--name)](#name---name)
+     - [PID equivalent](#pid-equivalent)
+ - [IPC settings (--ipc)](#ipc-settings---ipc)
+ - [Network settings](#network-settings)
+ - [Restart policies (--restart)](#restart-policies---restart)
+ - [Clean up (--rm)](#clean-up---rm)
+ - [Runtime constraints on resources](#runtime-constraints-on-resources)
+ - [Runtime privilege and Linux capabilities](#runtime-privilege-and-linux-capabilities)
 
 ## Detached vs foreground
 
@@ -115,8 +123,8 @@ and pass along signals. All of that is configurable:
     --sig-proxy=true: Proxy all received signals to the process (non-TTY mode only)
     -i              : Keep STDIN open even if not attached
 
-If you do not specify `-a` then Docker will [attach all standard
-streams]( https://github.com/docker/docker/blob/75a7f4d90cde0295bcfb7213004abce8d4779b75/commands.go#L1797).
+If you do not specify `-a` then Docker will [attach to both stdout and stderr
+]( https://github.com/docker/docker/blob/4118e0c9eebda2412a09ae66e90c34b85fae3275/runconfig/opts/parse.go#L267).
 You can specify to which of the three standard streams (`STDIN`, `STDOUT`,
 `STDERR`) you'd like to connect instead, as in:
 
@@ -380,7 +388,7 @@ network mode a container has its own UTS namespace by default. As such
 `--hostname` is allowed in `host` network mode and will only change the
 hostname inside the container.
 Similar to `--hostname`, the `--add-host`, `--dns`, `--dns-search`, and
-`--dns-opt` options can be used in `host` network mode. These options update
+`--dns-option` options can be used in `host` network mode. These options update
 `/etc/hosts` or `/etc/resolv.conf` inside the container. No change are made to
 `/etc/hosts` and `/etc/resolv.conf` on the host.
 
@@ -399,7 +407,7 @@ or a High Performance Web Server.
 With the network set to `container` a container will share the
 network stack of another container.  The other container's name must be
 provided in the format of `--network container:<name|id>`. Note that `--add-host`
-`--hostname` `--dns` `--dns-search` `--dns-opt` and `--mac-address` are
+`--hostname` `--dns` `--dns-search` `--dns-option` and `--mac-address` are
 invalid in `container` netmode, and `--publish` `--publish-all` `--expose` are
 also invalid in `container` netmode.
 
@@ -548,7 +556,7 @@ Or, to get the last time the container was (re)started;
 
 Combining `--restart` (restart policy) with the `--rm` (clean up) flag results
 in an error. On container restart, attached clients are disconnected. See the
-examples on using the [`--rm` (clean up)](run.md#clean-up-rm) flag later in this page.
+examples on using the [`--rm` (clean up)](#clean-up-rm) flag later in this page.
 
 ### Examples
 
@@ -678,10 +686,13 @@ container:
 | `--memory-reservation=""`  | Memory soft limit (format: `<number>[<unit>]`). Number is a positive integer. Unit can be one of `b`, `k`, `m`, or `g`.                         |
 | `--kernel-memory=""`       | Kernel memory limit (format: `<number>[<unit>]`). Number is a positive integer. Unit can be one of `b`, `k`, `m`, or `g`. Minimum is 4M.        |
 | `-c`, `--cpu-shares=0`     | CPU shares (relative weight)                                                                                                                    |
+| `--cpus=0.000`             | Number of CPUs. Number is a fractional number. 0.000 means no limit.                                                                            |
 | `--cpu-period=0`           | Limit the CPU CFS (Completely Fair Scheduler) period                                                                                            |
 | `--cpuset-cpus=""`         | CPUs in which to allow execution (0-3, 0,1)                                                                                                     |
 | `--cpuset-mems=""`         | Memory nodes (MEMs) in which to allow execution (0-3, 0,1). Only effective on NUMA systems.                                                     |
 | `--cpu-quota=0`            | Limit the CPU CFS (Completely Fair Scheduler) quota                                                                                             |
+| `--cpu-rt-period=0`        | Limit the CPU real-time period. In microseconds. Requires parent cgroups be set and cannot be higher than parent. Also check rtprio ulimits.    |
+| `--cpu-rt-runtime=0`       | Limit the CPU real-time runtime. In microseconds. Requires parent cgroups be set and cannot be higher than parent. Also check rtprio ulimits.   |
 | `--blkio-weight=0`         | Block IO weight (relative weight) accepts a weight value between 10 and 1000.                                                                   |
 | `--blkio-weight-device=""` | Block IO weight (relative device weight, format: `DEVICE_NAME:WEIGHT`)                                                                          |
 | `--device-read-bps=""`     | Limit read rate from a device (format: `<device-path>:<number>[<unit>]`). Number is a positive integer. Unit can be one of `kb`, `mb`, or `gb`. |
@@ -959,6 +970,13 @@ Examples:
     $ docker run -it --cpu-period=50000 --cpu-quota=25000 ubuntu:14.04 /bin/bash
 
 If there is 1 CPU, this means the container can get 50% CPU worth of run-time every 50ms.
+
+In addition to use `--cpu-period` and `--cpu-quota` for setting CPU period constraints,
+it is possible to specify `--cpus` with a float number to achieve the same purpose.
+For example, if there is 1 CPU, then `--cpus=0.5` will achieve the same result as
+setting `--cpu-period=50000` and `--cpu-quota=25000` (50% CPU).
+
+The default value for `--cpus` is `0.000`, which means there is no limit.
 
 For more information, see the [CFS documentation on bandwidth limiting](https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt).
 
@@ -1239,7 +1257,7 @@ container's logging driver. The following options are supported:
 
 The `docker logs` command is available only for the `json-file` and `journald`
 logging drivers.  For detailed information on working with logging drivers, see
-[Configure a logging driver](../admin/logging/overview.md).
+[Configure a logging driver](https://docs.docker.com/engine/admin/logging/overview/).
 
 
 ## Overriding Dockerfile image defaults
@@ -1253,15 +1271,15 @@ Four of the Dockerfile commands cannot be overridden at runtime: `FROM`,
 in `docker run`. We'll go through what the developer might have set in each
 Dockerfile instruction and how the operator can override that setting.
 
- - [CMD (Default Command or Options)](run.md#cmd-default-command-or-options)
+ - [CMD (Default Command or Options)](#cmd-default-command-or-options)
  - [ENTRYPOINT (Default Command to Execute at Runtime)](
     #entrypoint-default-command-to-execute-at-runtime)
- - [EXPOSE (Incoming Ports)](run.md#expose-incoming-ports)
- - [ENV (Environment Variables)](run.md#env-environment-variables)
- - [HEALTHCHECK](run.md#healthcheck)
- - [VOLUME (Shared Filesystems)](run.md#volume-shared-filesystems)
- - [USER](run.md#user)
- - [WORKDIR](run.md#workdir)
+ - [EXPOSE (Incoming Ports)](#expose-incoming-ports)
+ - [ENV (Environment Variables)](#env-environment-variables)
+ - [HEALTHCHECK](#healthcheck)
+ - [VOLUME (Shared Filesystems)](#volume-shared-filesystems)
+ - [USER](#user)
+ - [WORKDIR](#workdir)
 
 ### CMD (default command or options)
 
@@ -1301,6 +1319,10 @@ or two examples of how to pass more parameters to that ENTRYPOINT:
 
     $ docker run -it --entrypoint /bin/bash example/redis -c ls -l
     $ docker run -it --entrypoint /usr/bin/redis-cli example/redis --help
+
+You can reset a containers entrypoint by passing an empty string, for example:
+
+    $ docker run -it --entrypoint="" mysql bash
 
 > **Note**: Passing `--entrypoint` will clear out any default command set on the
 > image (i.e. any `CMD` instruction in the Dockerfile used to build it).
@@ -1358,7 +1380,7 @@ If the operator uses `--link` when starting a new client container in the
 default bridge network, then the client container can access the exposed
 port via a private networking interface.
 If `--link` is used when starting a container in a user-defined network as
-described in [*Docker network overview*](../userguide/networking/index.md),
+described in [*Docker network overview*](https://docs.docker.com/engine/userguide/networking/),
 it will provide a named alias for the container being linked to.
 
 ### ENV (environment variables)
@@ -1489,7 +1511,7 @@ The example below mounts an empty tmpfs into the container with the `rw`,
 
 The volumes commands are complex enough to have their own documentation
 in section [*Manage data in
-containers*](../tutorials/dockervolumes.md). A developer can define
+containers*](https://docs.docker.com/engine/tutorials/dockervolumes/). A developer can define
 one or more `VOLUME`'s associated with an image, but only the operator
 can give access from one container to another (or from a container to a
 volume mounted on the host).

@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/version/
-description: The version command description and usage
-keywords:
-- version, architecture, api
-title: docker version
+title: "version"
+description: "The version command description and usage"
+keywords: "version, architecture, api"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# version
 
 ```markdown
 Usage:  docker version [OPTIONS]
@@ -13,7 +21,7 @@ Usage:  docker version [OPTIONS]
 Show the Docker version information
 
 Options:
-  -f, --format string   Format the output using the given go template
+  -f, --format string   Format the output using the given Go template
       --help            Print usage
 ```
 

@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/ps/
-description: The ps command description and usage
-keywords:
-- container, running, list
-title: docker ps
+title: "ps"
+description: "The ps command description and usage"
+keywords: "container, running, list"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# ps
 
 ```markdown
 Usage: docker ps [OPTIONS]
@@ -15,15 +23,20 @@ List containers
 Options:
   -a, --all             Show all containers (default shows just running)
   -f, --filter value    Filter output based on conditions provided (default [])
-                        - exited=<int> an exit code of <int>
-                        - label=<key> or label=<key>=<value>
-                        - status=(created|restarting|running|paused|exited)
-                        - name=<string> a container's name
-                        - id=<ID> a container's ID
-                        - before=(<container-name>|<container-id>)
-                        - since=(<container-name>|<container-id>)
                         - ancestor=(<image-name>[:tag]|<image-id>|<image@digest>)
                           containers created from an image or a descendant.
+                        - before=(<container-name>|<container-id>)
+                        - exited=<int> an exit code of <int>
+                        - health=(starting|healthy|unhealthy|none)
+                        - id=<ID> a container's ID
+                        - isolation=(`default`|`process`|`hyperv`) (Windows daemon only)
+                        - is-task=(true|false)
+                        - label=<key> or label=<key>=<value>
+                        - name=<string> a container's name
+                        - network=(<network-id>|<network-name>)
+                        - since=(<container-name>|<container-id>)
+                        - status=(created|restarting|removing|running|paused|exited) 
+                        - volume=(<volume name>|<mount point destination>)
       --format string   Pretty-print containers using a Go template
       --help            Print usage
   -n, --last int        Show n last created containers (includes all states) (default -1)
@@ -65,13 +78,14 @@ The currently supported filters are:
 * label (`label=<key>` or `label=<key>=<value>`)
 * name (container's name)
 * exited (int - the code of exited containers. Only useful with `--all`)
-* status (created|restarting|running|paused|exited|dead)
+* status (created|restarting|running|removing|paused|exited|dead)
 * ancestor (`<image-name>[:<tag>]`,  `<image id>` or `<image@digest>`) - filters containers that were created from the given image or a descendant.
 * before (container's id or name) - filters containers created before given id or name
 * since (container's id or name) - filters containers created since given id or name
 * isolation (default|process|hyperv)   (Windows daemon only)
 * volume (volume name or mount point) - filters containers that mount volumes.
 * network (network id or name) - filters containers connected to the provided network
+* health (starting|healthy|unhealthy|none) - filters containers based on healthcheck status
 
 #### Label
 
@@ -116,7 +130,7 @@ You can also filter for a substring in a name as this shows:
 $ docker ps --filter "name=nostalgic"
 
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-715ebfcee040        busybox             "top"               3 seconds ago       Up 1 seconds                            i_am_nostalgic
+715ebfcee040        busybox             "top"               3 seconds ago       Up 1 second                             i_am_nostalgic
 9b6247364a03        busybox             "top"               7 minutes ago       Up 7 minutes                            nostalgic_stallman
 673394ef1d4c        busybox             "top"               38 minutes ago      Up 38 minutes                           nostalgic_shockley
 ```
@@ -156,7 +170,7 @@ Any of these events result in a `137` status:
 #### Status
 
 The `status` filter matches containers by status. You can filter using
-`created`, `restarting`, `running`, `paused`, `exited` and `dead`. For example,
+`created`, `restarting`, `running`, `removing`, `paused`, `exited` and `dead`. For example,
 to filter for `running` containers:
 
 ```bash
@@ -221,7 +235,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 ```
 
 The following matches containers based on the layer `d0e008c6cf02` or an image
-that have this layer in it's layer stack.
+that have this layer in its layer stack.
 
 ```bash
 $ docker ps --filter ancestor=d0e008c6cf02
@@ -338,6 +352,7 @@ Placeholder   | Description
 `.Labels`     | All labels assigned to the container.
 `.Label`      | Value of a specific label for this container. For example `'{% raw %}{{.Label "com.docker.swarm.cpu"}}{% endraw %}'`
 `.Mounts`     | Names of the volumes mounted in this container.
+`.Networks`   | Names of the networks attached to this container.
 
 When using the `--format` option, the `ps` command will either output the data
 exactly as the template declares or, when using the `table` directive, includes

@@ -1,13 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/service_inspect/
-description: The service inspect command description and usage
-keywords:
-- service, inspect
-title: docker service inspect
+title: "service inspect"
+description: "The service inspect command description and usage"
+keywords: "service, inspect"
 ---
 
-**Warning:** this command is part of the Swarm management feature introduced in Docker 1.12, and might be subject to non backward-compatible changes.
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# service inspect
 
 ```Markdown
 Usage:  docker service inspect [OPTIONS] SERVICE [SERVICE...]
@@ -15,7 +21,7 @@ Usage:  docker service inspect [OPTIONS] SERVICE [SERVICE...]
 Display detailed information on one or more services
 
 Options:
-  -f, --format string   Format the output using the given go template
+  -f, --format string   Format the output using the given Go template
       --help            Print usage
       --pretty          Print the information in a human friendly format.
 ```
@@ -40,8 +46,8 @@ For example, given the following service;
 
 ```bash
 $ docker service ls
-ID            NAME      REPLICAS  IMAGE         COMMAND
-dmu1ept4cxcf  redis     3/3       redis:3.0.6
+ID            NAME   MODE        REPLICAS  IMAGE
+dmu1ept4cxcf  redis  replicated  3/3       redis:3.0.6
 ```
 
 Both `docker service inspect redis`, and `docker service inspect dmu1ept4cxcf`
@@ -114,7 +120,7 @@ ID:		c8wgl7q4ndfd52ni6qftkvnnp
 Name:		frontend
 Labels:
  - org.example.projectname=demo-app
-Mode:		REPLICATED
+Service Mode:	REPLICATED
  Replicas:		5
 Placement:
 UpdateConfig:
@@ -122,12 +128,15 @@ UpdateConfig:
 ContainerSpec:
  Image:		nginx:alpine
 Resources:
+Endpoint Mode:  vip
 Ports:
  Name =
  Protocol = tcp
  TargetPort = 443
  PublishedPort = 4443
 ```
+
+You can also use `--format pretty` for the same effect.
 
 
 ### Finding the number of tasks running as part of a service
@@ -145,6 +154,7 @@ $ docker service inspect --format='{{.Spec.Mode.Replicated.Replicas}}' redis
 ## Related information
 
 * [service create](service_create.md)
+* [service logs](service_logs.md)
 * [service ls](service_ls.md)
 * [service rm](service_rm.md)
 * [service scale](service_scale.md)

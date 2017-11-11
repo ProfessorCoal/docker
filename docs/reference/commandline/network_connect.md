@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/network_connect/
-description: The network connect command description and usage
-keywords:
-- network, connect, user-defined
-title: docker network connect
+title: "network connect"
+description: "The network connect command description and usage"
+keywords: "network, connect, user-defined"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# network connect
 
 ```markdown
 Usage:  docker network connect [OPTIONS] NETWORK CONTAINER
@@ -87,5 +95,6 @@ You can connect a container to one or more networks. The networks need not be th
 * [network disconnect](network_disconnect.md)
 * [network ls](network_ls.md)
 * [network rm](network_rm.md)
-* [Understand Docker container networks](../../userguide/networking/index.md)
-* [Work with networks](../../userguide/networking/work-with-networks.md)
+* [network prune](network_prune.md)
+* [Understand Docker container networks](https://docs.docker.com/engine/userguide/networking/)
+* [Work with networks](https://docs.docker.com/engine/userguide/networking/work-with-networks/)

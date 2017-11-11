@@ -1,13 +1,20 @@
 ---
-redirect_from:
-- /reference/commandline/dockerd/
-- /reference/commandline/daemon/
-- /engine/reference/commandline/daemon/
-description: The daemon command description and usage
-keywords:
-- container, daemon, runtime
-title: dockerd
+title: "dockerd"
+aliases: ["/engine/reference/commandline/daemon/"]
+description: "The daemon command description and usage"
+keywords: "container, daemon, runtime"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# daemon
 
 ```markdown
 Usage: dockerd [OPTIONS]
@@ -15,66 +22,72 @@ Usage: dockerd [OPTIONS]
 A self-sufficient runtime for containers.
 
 Options:
-
-      --add-runtime=[]                       Register an additional OCI compatible runtime
-      --api-cors-header                      Set CORS headers in the remote API
-      --authorization-plugin=[]              Authorization plugins to load
-      -b, --bridge                           Attach containers to a network bridge
-      --bip                                  Specify network bridge IP
-      --cgroup-parent                        Set parent cgroup for all containers
-      --cluster-advertise                    Address or interface name to advertise
-      --cluster-store                        URL of the distributed storage backend
-      --cluster-store-opt=map[]              Set cluster store options
-      --config-file=/etc/docker/daemon.json  Daemon configuration file
-      --containerd                           Path to containerd socket
-      -D, --debug                            Enable debug mode
-      --default-gateway                      Container default gateway IPv4 address
-      --default-gateway-v6                   Container default gateway IPv6 address
-      --default-runtime=runc                 Default OCI runtime for containers
-      --default-ulimit=[]                    Default ulimits for containers
-      --disable-legacy-registry              Disable contacting legacy registries
-      --dns=[]                               DNS server to use
-      --dns-opt=[]                           DNS options to use
-      --dns-search=[]                        DNS search domains to use
-      --exec-opt=[]                          Runtime execution options
-      --exec-root=/var/run/docker            Root directory for execution state files
-      --fixed-cidr                           IPv4 subnet for fixed IPs
-      --fixed-cidr-v6                        IPv6 subnet for fixed IPs
-      -G, --group=docker                     Group for the unix socket
-      -g, --graph=/var/lib/docker            Root of the Docker runtime
-      -H, --host=[]                          Daemon socket(s) to connect to
-      --help                                 Print usage
-      --icc=true                             Enable inter-container communication
-      --insecure-registry=[]                 Enable insecure registry communication
-      --ip=0.0.0.0                           Default IP when binding container ports
-      --ip-forward=true                      Enable net.ipv4.ip_forward
-      --ip-masq=true                         Enable IP masquerading
-      --iptables=true                        Enable addition of iptables rules
-      --ipv6                                 Enable IPv6 networking
-      -l, --log-level=info                   Set the logging level
-      --label=[]                             Set key=value labels to the daemon
-      --live-restore                         Enables keeping containers alive during daemon downtime
-      --log-driver=json-file                 Default driver for container logs
-      --log-opt=map[]                        Default log driver options for containers
-      --max-concurrent-downloads=3           Set the max concurrent downloads for each pull
-      --max-concurrent-uploads=5             Set the max concurrent uploads for each push
-      --mtu                                  Set the containers network MTU
-      --oom-score-adjust=-500                Set the oom_score_adj for the daemon
-      -p, --pidfile=/var/run/docker.pid      Path to use for daemon PID file
-      --raw-logs                             Full timestamps without ANSI coloring
-      --registry-mirror=[]                   Preferred Docker registry mirror
-      -s, --storage-driver                   Storage driver to use
-      --selinux-enabled                      Enable selinux support
-      --storage-opt=[]                       Storage driver options
-      --swarm-default-advertise-addr         Set default address or interface for swarm advertised address
-      --tls                                  Use TLS; implied by --tlsverify
-      --tlscacert=~/.docker/ca.pem           Trust certs signed only by this CA
-      --tlscert=~/.docker/cert.pem           Path to TLS certificate file
-      --tlskey=~/.docker/key.pem             Path to TLS key file
-      --tlsverify                            Use TLS and verify the remote
-      --userland-proxy=true                  Use userland proxy for loopback traffic
-      --userns-remap                         User/Group setting for user namespaces
-      -v, --version                          Print version information and quit
+      --add-runtime value                     Register an additional OCI compatible runtime (default [])
+      --api-cors-header string                Set CORS headers in the Engine API
+      --authorization-plugin value            Authorization plugins to load (default [])
+      --bip string                            Specify network bridge IP
+  -b, --bridge string                         Attach containers to a network bridge
+      --cgroup-parent string                  Set parent cgroup for all containers
+      --cluster-advertise string              Address or interface name to advertise
+      --cluster-store string                  URL of the distributed storage backend
+      --cluster-store-opt value               Set cluster store options (default map[])
+      --config-file string                    Daemon configuration file (default "/etc/docker/daemon.json")
+      --containerd string                     Path to containerd socket
+  -D, --debug                                 Enable debug mode
+      --default-gateway value                 Container default gateway IPv4 address
+      --default-gateway-v6 value              Container default gateway IPv6 address
+      --default-runtime string                Default OCI runtime for containers (default "runc")
+      --default-ulimit value                  Default ulimits for containers (default [])
+      --disable-legacy-registry               Disable contacting legacy registries
+      --dns value                             DNS server to use (default [])
+      --dns-opt value                         DNS options to use (default [])
+      --dns-search value                      DNS search domains to use (default [])
+      --exec-opt value                        Runtime execution options (default [])
+      --exec-root string                      Root directory for execution state files (default "/var/run/docker")
+      --experimental                          Enable experimental features
+      --fixed-cidr string                     IPv4 subnet for fixed IPs
+      --fixed-cidr-v6 string                  IPv6 subnet for fixed IPs
+  -g, --graph string                          Root of the Docker runtime (default "/var/lib/docker")
+  -G, --group string                          Group for the unix socket (default "docker")
+      --help                                  Print usage
+  -H, --host value                            Daemon socket(s) to connect to (default [])
+      --icc                                   Enable inter-container communication (default true)
+      --init                                  Run an init in the container to forward signals and reap processes
+      --init-path string                      Path to the docker-init binary
+      --insecure-registry value               Enable insecure registry communication (default [])
+      --ip value                              Default IP when binding container ports (default 0.0.0.0)
+      --ip-forward                            Enable net.ipv4.ip_forward (default true)
+      --ip-masq                               Enable IP masquerading (default true)
+      --iptables                              Enable addition of iptables rules (default true)
+      --ipv6                                  Enable IPv6 networking
+      --label value                           Set key=value labels to the daemon (default [])
+      --live-restore                          Enable live restore of docker when containers are still running (Linux only)
+      --log-driver string                     Default driver for container logs (default "json-file")
+  -l, --log-level string                      Set the logging level ("debug", "info", "warn", "error", "fatal") (default "info")
+      --log-opt value                         Default log driver options for containers (default map[])
+      --max-concurrent-downloads int          Set the max concurrent downloads for each pull (default 3)
+      --max-concurrent-uploads int            Set the max concurrent uploads for each push (default 5)
+      --metrics-addr string                   Set address and port to serve the metrics api (default "")
+      --mtu int                               Set the containers network MTU
+      --oom-score-adjust int                  Set the oom_score_adj for the daemon (default -500)
+  -p, --pidfile string                        Path to use for daemon PID file (default "/var/run/docker.pid")
+      --raw-logs                              Full timestamps without ANSI coloring
+      --registry-mirror value                 Preferred Docker registry mirror (default [])
+      --seccomp-profile value                 Path to seccomp profile
+      --selinux-enabled                       Enable selinux support
+      --shutdown-timeout=15                   Set the shutdown timeout value in seconds
+  -s, --storage-driver string                 Storage driver to use
+      --storage-opt value                     Storage driver options (default [])
+      --swarm-default-advertise-addr string   Set default address or interface for swarm advertised address
+      --tls                                   Use TLS; implied by --tlsverify
+      --tlscacert string                      Trust certs signed only by this CA (default "/root/.docker/ca.pem")
+      --tlscert string                        Path to TLS certificate file (default "/root/.docker/cert.pem")
+      --tlskey string                         Path to TLS key file (default "/root/.docker/key.pem")
+      --tlsverify                             Use TLS and verify the remote
+      --userland-proxy                        Use userland proxy for loopback traffic (default true)
+      --userland-proxy-path string            Path to the userland proxy binary
+      --userns-remap string                   User/Group setting for user namespaces
+  -v, --version                               Print version information and quit
 ```
 
 Options with [] may be specified multiple times.
@@ -87,7 +100,7 @@ To run the daemon with debug output, use `dockerd -D`.
 
 ## Daemon socket option
 
-The Docker daemon can listen for [Docker Remote API](../api/docker_remote_api.md)
+The Docker daemon can listen for [Docker Engine API](../api/)
 requests via three different types of Socket: `unix`, `tcp`, and `fd`.
 
 By default, a `unix` domain socket (or IPC socket) is created at
@@ -97,7 +110,7 @@ membership.
 If you need to access the Docker daemon remotely, you need to enable the `tcp`
 Socket. Beware that the default setup provides un-encrypted and
 un-authenticated direct access to the Docker daemon - and should be secured
-either using the [built in HTTPS encrypted socket](../../security/https.md), or by
+either using the [built in HTTPS encrypted socket](https://docs.docker.com/engine/security/https/), or by
 putting a secure web proxy in front of it. You can listen on port `2375` on all
 network interfaces with `-H tcp://0.0.0.0:2375`, or on a particular network
 interface using its IP address: `-H tcp://192.168.59.103:2375`. It is
@@ -233,7 +246,7 @@ snapshots. For each devicemapper graph location – typically
 `/var/lib/docker/devicemapper` – a thin pool is created based on two block
 devices, one for data and one for metadata. By default, these block devices
 are created automatically by using loopback mounts of automatically created
-sparse files. Refer to [Storage driver options](dockerd.md#storage-driver-options) below
+sparse files. Refer to [Storage driver options](#storage-driver-options) below
 for a way how to customize this setup.
 [~jpetazzo/Resizing Docker containers with the Device Mapper plugin](http://jpetazzo.github.io/2014/01/29/docker-device-mapper-resize/)
 article explains how to tune your existing setup without the use of options.
@@ -245,7 +258,7 @@ does not share executable memory between devices. Use
 The `zfs` driver is probably not as fast as `btrfs` but has a longer track record
 on stability. Thanks to `Single Copy ARC` shared blocks between clones will be
 cached only once. Use `dockerd -s zfs`. To select a different zfs filesystem
-set `zfs.fsname` option as described in [Storage driver options](dockerd.md#storage-driver-options).
+set `zfs.fsname` option as described in [Storage driver options](#storage-driver-options).
 
 The `overlay` is a very fast union filesystem. It is now merged in the main
 Linux kernel as of [3.18.0](https://lkml.org/lkml/2014/10/26/137). `overlay`
@@ -594,6 +607,22 @@ options for `zfs` start with `zfs` and options for `btrfs` start with `btrfs`.
     $ sudo dockerd --storage-opt dm.min_free_space=10%
     ```
 
+*  `dm.xfs_nospace_max_retries`
+
+    Specifies the maximum number of retries XFS should attempt to complete
+    IO when ENOSPC (no space) error is returned by underlying storage device.
+
+    By default XFS retries infinitely for IO to finish and this can result
+    in unkillable process. To change this behavior one can set
+    xfs_nospace_max_retries to say 0 and XFS will not retry IO after getting
+    ENOSPC and will shutdown filesystem.
+
+    Example use:
+
+    ```bash
+    $ sudo dockerd --storage-opt dm.xfs_nospace_max_retries=0
+    ```
+
 #### ZFS options
 
 *   `zfs.fsname`
@@ -637,7 +666,7 @@ options for `zfs` start with `zfs` and options for `btrfs` start with `btrfs`.
 ## Docker runtime execution options
 
 The Docker daemon relies on a
-[OCI](https://github.com/opencontainers/specs) compliant runtime
+[OCI](https://github.com/opencontainers/runtime-spec) compliant runtime
 (invoked via the `containerd` daemon) as its interface to the Linux
 kernel `namespaces`, `cgroups`, and `SELinux`.
 
@@ -655,16 +684,18 @@ configuration file or using the `--add-runtime` command line argument.
 The following is an example adding 2 runtimes via the configuration:
 
 ```json
-"default-runtime": "runc",
-"runtimes": {
-	"runc": {
-		"path": "runc"
-	},
-	"custom": {
-		"path": "/usr/local/bin/my-runc-replacement",
-		"runtimeArgs": [
-			"--debug"
-		]
+{
+	"default-runtime": "runc",
+	"runtimes": {
+		"runc": {
+			"path": "runc"
+		},
+		"custom": {
+			"path": "/usr/local/bin/my-runc-replacement",
+			"runtimeArgs": [
+				"--debug"
+			]
+		}
 	}
 }
 ```
@@ -875,7 +906,7 @@ path. Consult with your Docker administrator to get information about the
 plugins available to you.
 
 Once a plugin is installed, requests made to the `daemon` through the command
-line or Docker's remote API are allowed or denied by the plugin.  If you have
+line or Docker's Engine API are allowed or denied by the plugin.  If you have
 multiple plugins installed, at least one must allow the request for it to
 complete.
 
@@ -932,11 +963,6 @@ these resources are name-based, not id-based.  If the numeric ID information
 provided does not exist as entries in `/etc/passwd` or `/etc/group`, daemon
 startup will fail with an error message.
 
-> **Note:** On Fedora 22, you have to `touch` the `/etc/subuid` and `/etc/subgid`
-> files to have ranges assigned when users are created.  This must be done
-> *before* the `--userns-remap` option is enabled. Once these files exist, the
-> daemon can be (re)started and range assignment on user creation works properly.
-
 **Example: starting with default Docker user management:**
 
 ```bash
@@ -962,6 +988,11 @@ configured, you can provide that username or uid to the `--userns-remap` flag.
 If you have a group that doesn't match the username, you may provide the `gid`
 or group name as well; otherwise the username will be used as the group name
 when querying the system for the subordinate group ID range.
+
+The output of `docker info` can be used to determine if the daemon is running
+with user namespaces enabled or not. If the daemon is configured with user
+namespaces, the Security Options entry in the response will list "userns" as
+one of the enabled security features.
 
 ### Detailed information on `subuid`/`subgid` ranges
 
@@ -991,7 +1022,7 @@ following algorithm to create the mapping ranges:
 If you enable user namespaces on the daemon, all containers are started
 with user namespaces enabled. In some situations you might want to disable
 this feature for a container, for example, to start a privileged container (see
-[user namespace known restrictions](dockerd.md#user-namespace-known-restrictions)).
+[user namespace known restrictions](#user-namespace-known-restrictions)).
 To enable those advanced features for a specific container use `--userns=host`
 in the `run/exec/create` command.
 This option will completely disable user namespace mapping for the container's user.
@@ -1001,16 +1032,16 @@ This option will completely disable user namespace mapping for the container's u
 The following standard Docker features are currently incompatible when
 running a Docker daemon with user namespaces enabled:
 
- - sharing PID or NET namespaces with the host (`--pid=host` or `--network=host`)
- - A `--read-only` container filesystem (this is a Linux kernel restriction against remounting with modified flags of a currently mounted filesystem when inside a user namespace)
- - external (volume or graph) drivers which are unaware/incapable of using daemon user mappings
+ - sharing PID or NET namespaces with the host (`--pid=host` or `--net=host`)
  - Using `--privileged` mode flag on `docker run` (unless also specifying `--userns=host`)
 
 In general, user namespaces are an advanced feature and will require
 coordination with other capabilities. For example, if volumes are mounted from
 the host, file ownership will have to be pre-arranged if the user or
 administrator wishes the containers to have expected access to the volume
-contents.
+contents. Note that when using external volume or graph driver plugins, those
+external software programs must be made aware of user and group mapping ranges
+if they are to work seamlessly with user namespace support.
 
 Finally, while the `root` user inside a user namespaced container process has
 many of the expected admin privileges that go along with being the superuser, the
@@ -1061,6 +1092,31 @@ This setting can also be set per container, using the `--cgroup-parent`
 option on `docker create` and `docker run`, and takes precedence over
 the `--cgroup-parent` option on the daemon.
 
+## Daemon Metrics
+
+The `--metrics-addr` option takes a tcp address to serve the metrics API.
+This feature is still experimental, therefore, the daemon must be running in experimental
+mode for this feature to work.
+
+To serve the metrics API on localhost:1337 you would specify `--metrics-addr 127.0.0.1:1337`
+allowing you to make requests on the API at `127.0.0.1:1337/metrics` to receive metrics in the
+[prometheus](https://prometheus.io/docs/instrumenting/exposition_formats/) format.
+
+If you are running a prometheus server you can add this address to your scrape configs
+to have prometheus collect metrics on Docker.  For more information
+on prometheus you can view the website [here](https://prometheus.io/).
+
+```yml
+scrape_configs:
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['127.0.0.1:1337']
+```
+
+Please note that this feature is still marked as experimental as metrics and metric
+names could change while this feature is still in experimental.  Please provide
+feedback on what you would like to see collected in the API.
+
 ## Daemon configuration file
 
 The `--config-file` option allows you to set any configuration option
@@ -1086,71 +1142,77 @@ This is a full example of the allowed configuration options on Linux:
 
 ```json
 {
-    "api-cors-header": "",
-    "authorization-plugins": [],
-    "bip": "",
-    "bridge": "",
-    "cgroup-parent": "",
-    "cluster-store": "",
-    "cluster-store-opts": {},
-    "cluster-advertise": "",
-    "debug": true,
-    "default-gateway": "",
-    "default-gateway-v6": "",
-    "default-runtime": "runc",
-    "default-ulimits": {},
-    "disable-legacy-registry": false,
-    "dns": [],
-    "dns-opts": [],
-    "dns-search": [],
-    "exec-opts": [],
-    "exec-root": "",
-    "fixed-cidr": "",
-    "fixed-cidr-v6": "",
-    "graph": "",
-    "group": "",
-    "hosts": [],
-    "icc": false,
-    "insecure-registries": [],
-    "ip": "0.0.0.0",
-    "iptables": false,
-    "ipv6": false,
-    "ip-forward": false,
-    "ip-masq": false,
-    "labels": [],
-    "live-restore": true,
-    "log-driver": "",
-    "log-level": "",
-    "log-opts": {},
-    "max-concurrent-downloads": 3,
-    "max-concurrent-uploads": 5,
-    "mtu": 0,
-    "oom-score-adjust": -500,
-    "pidfile": "",
-    "raw-logs": false,
-    "registry-mirrors": [],
-    "runtimes": {
-        "runc": {
-            "path": "runc"
-        },
-        "custom": {
-            "path": "/usr/local/bin/my-runc-replacement",
-            "runtimeArgs": [
-                "--debug"
-            ]
-        }
-    },
-    "selinux-enabled": false,
-    "storage-driver": "",
-    "storage-opts": [],
-    "swarm-default-advertise-addr": "",
-    "tls": true,
-    "tlscacert": "",
-    "tlscert": "",
-    "tlskey": "",
-    "tlsverify": true,
-    "userland-proxy": false,
-    "userns-remap": ""
+	"authorization-plugins": [],
+	"dns": [],
+	"dns-opts": [],
+	"dns-search": [],
+	"exec-opts": [],
+	"exec-root": "",
+	"experimental": false,
+	"storage-driver": "",
+	"storage-opts": [],
+	"labels": [],
+	"live-restore": true,
+	"log-driver": "",
+	"log-opts": {},
+	"mtu": 0,
+	"pidfile": "",
+	"graph": "",
+	"cluster-store": "",
+	"cluster-store-opts": {},
+	"cluster-advertise": "",
+	"max-concurrent-downloads": 3,
+	"max-concurrent-uploads": 5,
+	"shutdown-timeout": 15,
+	"debug": true,
+	"hosts": [],
+	"log-level": "",
+	"tls": true,
+	"tlsverify": true,
+	"tlscacert": "",
+	"tlscert": "",
+	"tlskey": "",
+	"swarm-default-advertise-addr": "",
+	"api-cors-header": "",
+	"selinux-enabled": false,
+	"userns-remap": "",
+	"group": "",
+	"cgroup-parent": "",
+	"default-ulimits": {},
+	"init": false,
+	"init-path": "/usr/libexec/docker-init",
+	"ipv6": false,
+	"iptables": false,
+	"ip-forward": false,
+	"ip-masq": false,
+	"userland-proxy": false,
+	"userland-proxy-path": "/usr/libexec/docker-proxy",
+	"ip": "0.0.0.0",
+	"bridge": "",
+	"bip": "",
+	"fixed-cidr": "",
+	"fixed-cidr-v6": "",
+	"default-gateway": "",
+	"default-gateway-v6": "",
+	"icc": false,
+	"raw-logs": false,
+	"registry-mirrors": [],
+	"seccomp-profile": "",
+	"insecure-registries": [],
+	"disable-legacy-registry": false,
+	"default-runtime": "runc",
+	"oom-score-adjust": -500,
+	"runtimes": {
+		"runc": {
+			"path": "runc"
+		},
+		"custom": {
+			"path": "/usr/local/bin/my-runc-replacement",
+			"runtimeArgs": [
+				"--debug"
+			]
+		}
+	}
 }
 ```
 
@@ -1165,36 +1227,39 @@ This is a full example of the allowed configuration options on Windows:
 ```json
 {
     "authorization-plugins": [],
-    "bridge": "",
-    "cluster-advertise": "",
-    "cluster-store": "",
-    "debug": true,
-    "default-ulimits": {},
-    "disable-legacy-registry": false,
     "dns": [],
     "dns-opts": [],
     "dns-search": [],
     "exec-opts": [],
-    "fixed-cidr": "",
-    "graph": "",
-    "group": "",
-    "hosts": [],
-    "insecure-registries": [],
-    "labels": [],
-    "live-restore": true,
-    "log-driver": "",
-    "log-level": "",
-    "mtu": 0,
-    "pidfile": "",
-    "raw-logs": false,
-    "registry-mirrors": [],
+    "experimental": false,
     "storage-driver": "",
     "storage-opts": [],
-    "swarm-default-advertise-addr": "",
+    "labels": [],
+    "log-driver": "",
+    "mtu": 0,
+    "pidfile": "",
+    "graph": "",
+    "cluster-store": "",
+    "cluster-advertise": "",
+    "max-concurrent-downloads": 3,
+    "max-concurrent-uploads": 5,
+    "shutdown-timeout": 15,
+    "debug": true,
+    "hosts": [],
+    "log-level": "",
+    "tlsverify": true,
     "tlscacert": "",
     "tlscert": "",
     "tlskey": "",
-    "tlsverify": true
+    "swarm-default-advertise-addr": "",
+    "group": "",
+    "default-ulimits": {},
+    "bridge": "",
+    "fixed-cidr": "",
+    "raw-logs": false,
+    "registry-mirrors": [],
+    "insecure-registries": [],
+    "disable-legacy-registry": false
 }
 ```
 
@@ -1214,7 +1279,7 @@ The list of currently supported options that can be reconfigured is this:
 - `cluster-store-opts`: it uses the new options to reload the discovery store.
 - `cluster-advertise`: it modifies the address advertised after reloading.
 - `labels`: it replaces the daemon labels with a new set of labels.
-- `live-restore`: Enables [keeping containers alive during daemon downtime](../../admin/live-restore.md).
+- `live-restore`: Enables [keeping containers alive during daemon downtime](https://docs.docker.com/engine/admin/live-restore/).
 - `max-concurrent-downloads`: it updates the max concurrent downloads for each pull.
 - `max-concurrent-uploads`: it updates the max concurrent uploads for each push.
 - `default-runtime`: it updates the runtime to be used if not is
@@ -1222,12 +1287,14 @@ The list of currently supported options that can be reconfigured is this:
   the runtime shipped with the official docker packages.
 - `runtimes`: it updates the list of available OCI runtimes that can
   be used to run containers
+- `authorization-plugin`: specifies the authorization plugins to use.
+- `insecure-registries`: it replaces the daemon insecure registries with a new set of insecure registries. If some existing insecure registries in daemon's configuration are not in newly reloaded insecure resgitries, these existing ones will be removed from daemon's config.
 
 Updating and reloading the cluster configurations such as `--cluster-store`,
 `--cluster-advertise` and `--cluster-store-opts` will take effect only if
 these configurations were not previously configured. If `--cluster-store`
 has been provided in flags and `cluster-advertise` not, `cluster-advertise`
-can be added in the configuration file without accompanied by `--cluster-store`
+can be added in the configuration file without accompanied by `--cluster-store`.
 Configuration reload will log a warning message if it detects a change in
 previously configured cluster configurations.
 
@@ -1241,7 +1308,7 @@ previously configured cluster configurations.
 This section describes how to run multiple Docker daemons on a single host. To
 run multiple daemons, you must configure each daemon so that it does not
 conflict with other daemons on the same host. You can set these options either
-by providing them as flags, or by using a [daemon configuration file](dockerd.md#daemon-configuration-file).
+by providing them as flags, or by using a [daemon configuration file](#daemon-configuration-file).
 
 The following daemon options must be configured for each daemon:
 

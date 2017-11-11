@@ -2,18 +2,20 @@ package daemon
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/docker/docker/api/errors"
+	containertypes "github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/strslice"
 	"github.com/docker/docker/container"
 	"github.com/docker/docker/daemon/network"
-	"github.com/docker/docker/errors"
 	"github.com/docker/docker/image"
 	"github.com/docker/docker/pkg/signal"
 	"github.com/docker/docker/pkg/system"
 	"github.com/docker/docker/pkg/truncindex"
-	containertypes "github.com/docker/engine-api/types/container"
-	"github.com/docker/engine-api/types/strslice"
+	"github.com/docker/docker/runconfig/opts"
 	"github.com/docker/go-connections/nat"
 )
 
@@ -100,7 +102,7 @@ func (daemon *Daemon) Register(c *container.Container) error {
 	return nil
 }
 
-func (daemon *Daemon) newContainer(name string, config *containertypes.Config, imgID image.ID, managed bool) (*container.Container, error) {
+func (daemon *Daemon) newContainer(name string, config *containertypes.Config, hostConfig *containertypes.HostConfig, imgID image.ID, managed bool) (*container.Container, error) {
 	var (
 		id             string
 		err            error
@@ -111,7 +113,16 @@ func (daemon *Daemon) newContainer(name string, config *containertypes.Config, i
 		return nil, err
 	}
 
-	daemon.generateHostname(id, config)
+	if hostConfig.NetworkMode.IsHost() {
+		if config.Hostname == "" {
+			config.Hostname, err = os.Hostname()
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		daemon.generateHostname(id, config)
+	}
 	entrypoint, args := daemon.getEntrypointAndArgs(config.Entrypoint, config.Cmd)
 
 	base := daemon.newBaseContainer(id)
@@ -209,7 +220,7 @@ func (daemon *Daemon) verifyContainerSettings(hostConfig *containertypes.HostCon
 		if config.WorkingDir != "" {
 			config.WorkingDir = filepath.FromSlash(config.WorkingDir) // Ensure in platform semantics
 			if !system.IsAbs(config.WorkingDir) {
-				return nil, fmt.Errorf("The working directory '%s' is invalid. It needs to be an absolute path", config.WorkingDir)
+				return nil, fmt.Errorf("the working directory '%s' is invalid, it needs to be an absolute path", config.WorkingDir)
 			}
 		}
 
@@ -219,23 +230,51 @@ func (daemon *Daemon) verifyContainerSettings(hostConfig *containertypes.HostCon
 				return nil, err
 			}
 		}
+
+		// Validate if Env contains empty variable or not (e.g., ``, `=foo`)
+		for _, env := range config.Env {
+			if _, err := opts.ValidateEnv(env); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	if hostConfig == nil {
 		return nil, nil
 	}
 
+	if hostConfig.AutoRemove && !hostConfig.RestartPolicy.IsNone() {
+		return nil, fmt.Errorf("can't create 'AutoRemove' container with restart policy")
+	}
+
 	for port := range hostConfig.PortBindings {
 		_, portStr := nat.SplitProtoPort(string(port))
 		if _, err := nat.ParsePort(portStr); err != nil {
-			return nil, fmt.Errorf("Invalid port specification: %q", portStr)
+			return nil, fmt.Errorf("invalid port specification: %q", portStr)
 		}
 		for _, pb := range hostConfig.PortBindings[port] {
 			_, err := nat.NewPort(nat.SplitProtoPort(pb.HostPort))
 			if err != nil {
-				return nil, fmt.Errorf("Invalid port specification: %q", pb.HostPort)
+				return nil, fmt.Errorf("invalid port specification: %q", pb.HostPort)
 			}
 		}
+	}
+
+	p := hostConfig.RestartPolicy
+
+	switch p.Name {
+	case "always", "unless-stopped", "no":
+		if p.MaximumRetryCount != 0 {
+			return nil, fmt.Errorf("maximum retry count cannot be used with restart policy '%s'", p.Name)
+		}
+	case "on-failure":
+		if p.MaximumRetryCount < 0 {
+			return nil, fmt.Errorf("maximum retry count cannot be negative")
+		}
+	case "":
+	// do nothing
+	default:
+		return nil, fmt.Errorf("invalid restart policy '%s'", p.Name)
 	}
 
 	// Now do platform-specific verification

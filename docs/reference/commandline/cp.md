@@ -1,11 +1,19 @@
 ---
-redirect_from:
-  - /reference/commandline/cp/
-description: The cp command description and usage
-keywords:
-- copy, container, files, folders
-title: docker cp
+title: "cp"
+description: "The cp command description and usage"
+keywords: "copy, container, files, folders"
 ---
+
+<!-- This file is maintained within the docker/docker Github
+     repository at https://github.com/docker/docker/. Make all
+     pull requests against that repo. If you see this file in
+     another repository, consider it read-only there, as it will
+     periodically be overwritten by the definitive file. Pull
+     requests which include edits to this file in other repositories
+     will be rejected.
+-->
+
+# cp
 
 ```markdown
 Usage:  docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-
